@@ -2,30 +2,38 @@
 
 import RPi.GPIO as GPIO
 import time
+from random import choice
 
+# Set-up GPIO and clear
 GPIO.setmode(GPIO.BCM)
 GPIO.cleanup()
 GPIO.setwarnings(False)
 
+# Define GPIO pins
 PINS=[17,18,27,22,23,24,25,4,10]
 for PIN in PINS:
 	GPIO.setup(PIN, GPIO.OUT)
 
+# Define number of cycles of each pattern
 flash_cycles = 3
 cylon_cycles = 5
 master_pulse_cycles = 0
 pulse_cycles = 1
 colour_cycles = 5
 line_cycles = 5
+random_cycles = 50
+pairs_cycles = 8
 
+# Define speeds for each pattern
 flash_speed = 0.2
 cylon_speed = 0.05
 pulse_speed = 0.002
 colour_speed = 0.2
 line_speed = 0.5
+random_speed = 0.1
+pairs_speed = 0.06
 
 while True:
-
 	for i in range(flash_cycles):
 		for PIN in PINS:
 			GPIO.output(PIN, GPIO.HIGH)
@@ -155,3 +163,52 @@ while True:
 		GPIO.output(4, GPIO.LOW)
 
 		time.sleep(line_speed)
+
+	for i in range(random_cycles):
+		first = choice(PINS)
+		second = choice(PINS)
+		GPIO.output(first, GPIO.HIGH)
+		GPIO.output(second, GPIO.HIGH)
+		time.sleep(random_speed)
+		GPIO.output(first, GPIO.LOW)
+		GPIO.output(second, GPIO.LOW)
+
+	for i in range(pairs_cycles):
+		GPIO.output(17, GPIO.HIGH)
+		GPIO.output(18, GPIO.HIGH)
+		time.sleep(pairs_speed)
+		GPIO.output(17, GPIO.LOW)
+		GPIO.output(18, GPIO.LOW)
+		GPIO.output(27, GPIO.HIGH)
+		GPIO.output(22, GPIO.HIGH)
+		time.sleep(pairs_speed)
+		GPIO.output(27, GPIO.LOW)
+		GPIO.output(22, GPIO.LOW)
+		GPIO.output(23, GPIO.HIGH)
+		GPIO.output(24, GPIO.HIGH)
+		time.sleep(pairs_speed)
+		GPIO.output(23, GPIO.LOW)
+		GPIO.output(24, GPIO.LOW)
+		GPIO.output(25, GPIO.HIGH)
+		GPIO.output(4, GPIO.HIGH)
+		time.sleep(pairs_speed)
+		GPIO.output(25, GPIO.LOW)
+		GPIO.output(4, GPIO.LOW)
+		GPIO.output(10, GPIO.HIGH)
+		time.sleep(pairs_speed)
+		GPIO.output(10, GPIO.LOW)
+		GPIO.output(25, GPIO.HIGH)
+		GPIO.output(4, GPIO.HIGH)
+		time.sleep(pairs_speed)
+		GPIO.output(25, GPIO.LOW)
+		GPIO.output(4, GPIO.LOW)
+		GPIO.output(23, GPIO.HIGH)
+		GPIO.output(24, GPIO.HIGH)
+		time.sleep(pairs_speed)
+		GPIO.output(23, GPIO.LOW)
+		GPIO.output(24, GPIO.LOW)
+		GPIO.output(27, GPIO.HIGH)
+		GPIO.output(22, GPIO.HIGH)
+		time.sleep(pairs_speed)
+		GPIO.output(27, GPIO.LOW)
+		GPIO.output(22, GPIO.LOW)
